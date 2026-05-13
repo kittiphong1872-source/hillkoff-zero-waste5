@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HILLKOFF GREEN INTELLIGENCE PLATFORM</title>
+    
+    <!-- Scripts & Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --hk-green-dark: #064E3B;
+            --hk-green-primary: #10B981;
+            --hk-green-light: #D1FAE5;
+            --hk-bg-dark: #0A0F0D;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Anuphan', sans-serif;
+            background-color: var(--hk-bg-dark);
+            color: white;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .green-gradient-card {
+            background: linear-gradient(135deg, #065F46 0%, #064E3B 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .nav-active {
+            color: var(--hk-green-primary);
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        .custom-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body x-data="appState()">
+
+    <!-- Preloader -->
+    <div x-show="loading" class="fixed inset-0 z-[100] bg-[#0A0F0D] flex items-center justify-center">
+        <div class="flex flex-col items-center">
+            <div class="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-emerald-500 font-medium tracking-widest animate-pulse">HILLKOFF INTELLIGENCE</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-md mx-auto min-h-screen pb-24 relative">
+        
+        <!-- Header Section (Inspired by Screenshot) -->
+        <header class="p-6 flex justify-between items-center bg-transparent sticky top-0 z-40 backdrop-blur-md">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden border-2 border-emerald-500">
+                    <img src="https://www.hillkoff.com/wp-content/uploads/2021/10/Logo-Hillkoff-1.png" alt="Logo" class="w-8">
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight">Hillkoff</h1>
+                    <p class="text-[10px] text-emerald-400 uppercase tracking-tighter opacity-70">Zero Waste · ESG Platform</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] text-emerald-100/60 uppercase">CO₂e รวม</p>
+                <p class="text-xl font-bold text-emerald-400" x-text="totalCarbon + ' kg'"></p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="px-5 space-y-6">
+
+            <!-- Tab: Dashboard -->
+            <template x-if="activeTab === 'home'">
+                <div class="space-y-6 animate-fade-in">
+                    
+                    <!-- Carbon Footprint Hero Card -->
+                    <div class="green-gradient-card p-8 rounded-[32px] text-center space-y-4 relative overflow-hidden custom-shadow">
+                        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#FFFFFF" d="M44.7,-76.4C58.1,-69.2,69.2,-58.1,77.3,-44.7C85.4,-31.3,90.5,-15.7,90.3,-0.1C90.1,15.5,84.6,31,75.4,44.1C66.2,57.2,53.3,67.9,38.9,74.9C24.5,81.9,8.6,85.2,-7.1,83.9C-22.8,82.7,-38.3,76.9,-51.7,67.8C-65.1,58.7,-76.4,46.3,-82.4,31.8C-88.4,17.3,-89.1,0.7,-85.4,-14.8C-81.7,-30.3,-73.6,-44.7,-61.7,-52.3C-49.8,-59.9,-34.1,-60.7,-19.9,-68.8C-5.7,-76.9,7.1,-92.3,22.4,-92C37.7,-91.7,55.5,-75.7,44.7,-76.4Z" transform="translate(100 100)" />
+                            </svg>
+                        </div>
+                        
+                        <p class="text-emerald-200/80 text-sm font-medium flex items-center justify-center gap-2">
+                            🌍 Carbon Footprint — องค์กร
+                        </p>
+                        <h2 class="text-6xl font-bold tracking-tighter" x-text="totalCarbon"></h2>
+                        <p class="text-xl font-medium text-emerald-200 tracking-widest">kg CO₂e</p>
+                        
+                        <div class="flex justify-center gap-2 pt-2">
+                            <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] border border-white/10 uppercase">ISO 14064</span>
+                            <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] border border-white/10 uppercase">GHG Protocol</span>
+                            <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] border border-white/10 uppercase">SDG 12</span>
+                        </div>
+
+                        <!-- Mini Stats Grid -->
+                        <div class="grid grid-cols-3 gap-1 pt-6 border-t border-white/10 mt-6">
+                            <div>
+                                <p class="text-2xl font-bold" x-text="todayCarbon"></p>
+                                <p class="text-[10px] opacity-60 uppercase">kg วันนี้</p>
+                            </div>
+                            <div class="border-x border-white/10">
+                                <p class="text-2xl font-bold" x-text="monthCarbon"></p>
+                                <p class="text-[10px] opacity-60 uppercase">kg เดือนนี้</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold" x-text="totalRecords"></p>
+                                <p class="text-[10px] opacity-60 uppercase">รายการ</p>
+                            </div>
+                        </div>
+
+                        <button @click="activeTab = 'log'" class="w-full bg-white text-emerald-900 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 active:scale-95 transition-transform mt-4">
+                            📝 บันทึกขยะใหม่
+                        </button>
+                    </div>
+
+                    <!-- Branch Grid Section -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center px-1">
+                            <h3 class="font-bold text-lg">สรุปแต่ละสาขา</h3>
+                            <button class="text-emerald-400 text-sm">ดูทั้งหมด</button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <template x-for="branch in branches" :key="branch.id">
+                                <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2 hover:bg-white/5 transition-colors cursor-pointer">
+                                    <div class="text-3xl" x-text="branch.icon"></div>
+                                    <h4 class="text-[11px] font-bold opacity-90 leading-tight" x-text="branch.name"></h4>
+                                    <p class="text-[9px] opacity-50" x-text="branch.records + ' รายการ'"></p>
+                                    <p class="text-xs font-bold text-emerald-400" x-text="branch.carbon + ' kg'"></p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Carbon Chart Section -->
+                    <div class="glass-card p-5 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-sm">แนวโน้มการลด Carbon</h3>
+                            <select class="bg-transparent text-[10px] border border-white/10 rounded px-2 py-1 outline-none">
+                                <option>สัปดาห์นี้</option>
+                                <option>เดือนนี้</option>
+                            </select>
+                        </div>
+                        <canvas id="carbonChart" class="w-full h-40"></canvas>
+                    </div>
+
+                </div>
+            </template>
+
+            <!-- Tab: Waste Logging (AI Feature) -->
+            <template x-if="activeTab === 'log'">
+                <div class="space-y-6 animate-fade-in pb-10">
+                    <h2 class="text-2xl font-bold">บันทึกข้อมูลขยะ</h2>
+                    
+                    <!-- AI Camera Placeholder -->
+                    <div class="relative group">
+                        <div @click="$refs.fileInput.click()" class="w-full aspect-video glass-card border-dashed border-2 border-emerald-500/50 flex flex-col items-center justify-center space-y-4 cursor-pointer overflow-hidden">
+                            <template x-if="!previewImage">
+                                <div class="text-center p-6">
+                                    <i data-lucide="camera" class="w-12 h-12 mx-auto text-emerald-500 mb-2"></i>
+                                    <p class="font-bold">ถ่ายรูปด้วย AI Vision</p>
+                                    <p class="text-[10px] opacity-50">เพื่อตรวจสอบประเภทขยะและรับคะแนนพิเศษ</p>
+                                </div>
+                            </template>
+                            <template x-if="previewImage">
+                                <img :src="previewImage" class="w-full h-full object-cover">
+                            </template>
+                        </div>
+                        <input type="file" x-ref="fileInput" @change="handleFileUpload" class="hidden" accept="image/*">
+                        
+                        <!-- AI Analysis Overlay -->
+                        <div x-show="analyzing" class="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                            <div class="text-center">
+                                <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                <p class="text-sm font-bold tracking-widest">AI กำลังวิเคราะห์รูปภาพ...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Result Notification -->
+                    <div x-show="aiResult" class="bg-emerald-500/20 border border-emerald-500/30 p-4 rounded-2xl flex items-start gap-4">
+                        <div class="bg-emerald-500 p-2 rounded-xl">
+                            <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-emerald-400">AI ผลวิเคราะห์: <span x-text="aiResult.type"></span></p>
+                            <p class="text-[10px] opacity-70" x-text="'ความแม่นยำ: ' + aiResult.confidence + '%'"></p>
+                            <p class="text-[10px] text-emerald-200 mt-1" x-text="aiResult.recommendation"></p>
+                        </div>
+                    </div>
+
+                    <!-- Log Form -->
+                    <div class="space-y-4 glass-card p-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] uppercase opacity-50 ml-1">ประเภทขยะ</label>
+                                <select x-model="formData.type" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none">
+                                    <option value="coffee">กากกาแฟ</option>
+                                    <option value="plastic">พลาสติก</option>
+                                    <option value="paper">กระดาษ</option>
+                                    <option value="food">เศษอาหาร</option>
+                                    <option value="glass">แก้ว</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] uppercase opacity-50 ml-1">น้ำหนัก (kg)</label>
+                                <input type="number" step="0.01" x-model="formData.weight" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase opacity-50 ml-1">สาขา</label>
+                            <select x-model="formData.branch" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none">
+                                <template x-for="branch in branches">
+                                    <option :value="branch.id" x-text="branch.name"></option>
+                                </template>
+                            </select>
+                        </div>
+
+                        <button @click="saveLog()" class="w-full bg-emerald-500 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform">
+                            ยืนยันและรับ Green Score
+                        </button>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Tab: Ranking -->
+            <template x-if="activeTab === 'ranking'">
+                <div class="space-y-6 animate-fade-in">
+                    <div class="text-center py-4">
+                        <h2 class="text-2xl font-bold uppercase tracking-widest">Sustainability Ranking</h2>
+                        <p class="text-xs opacity-50">อันดับพนักงานผู้ช่วยโลก</p>
+                    </div>
+
+                    <!-- Top 3 -->
+                    <div class="flex items-end justify-center gap-4 pb-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full border-2 border-slate-400 overflow-hidden mb-2">
+                                <img src="https://i.pravatar.cc/150?u=2" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-[10px] font-bold">K. Somchai</p>
+                            <div class="h-16 w-12 bg-slate-500/30 rounded-t-lg mt-2 flex items-center justify-center font-bold text-xl">2</div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-20 h-20 rounded-full border-4 border-yellow-500 overflow-hidden mb-2 relative">
+                                <div class="absolute -top-1 left-1/2 -translate-x-1/2 bg-yellow-500 text-[8px] px-2 py-0.5 rounded-full text-black font-bold uppercase">King</div>
+                                <img src="https://i.pravatar.cc/150?u=1" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-[10px] font-bold text-yellow-500">K. Anucha</p>
+                            <div class="h-24 w-16 bg-yellow-500/30 rounded-t-lg mt-2 flex items-center justify-center font-bold text-3xl">1</div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full border-2 border-orange-400 overflow-hidden mb-2">
+                                <img src="https://i.pravatar.cc/150?u=3" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-[10px] font-bold">K. Mali</p>
+                            <div class="h-12 w-12 bg-orange-500/30 rounded-t-lg mt-2 flex items-center justify-center font-bold text-xl">3</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <template x-for="(user, index) in rankings" :key="index">
+                            <div class="glass-card p-4 flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-sm font-bold opacity-50" x-text="index + 4"></span>
+                                    <img :src="`https://i.pravatar.cc/150?u=${index+10}`" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="text-sm font-bold" x-text="user.name"></p>
+                                        <p class="text-[10px] opacity-50" x-text="user.branch"></p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-emerald-400 font-bold" x-text="user.score"></p>
+                                    <p class="text-[8px] opacity-40 uppercase">Points</p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Tab: Analytics / ESG Report -->
+            <template x-if="activeTab === 'report'">
+                <div class="space-y-6 animate-fade-in">
+                    <h2 class="text-2xl font-bold">ESG Report & Analytics</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-card p-5 space-y-2">
+                            <p class="text-[10px] opacity-50 uppercase tracking-tighter">Circular Economy</p>
+                            <p class="text-2xl font-bold text-blue-400">84%</p>
+                            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-400 w-[84%]"></div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-5 space-y-2">
+                            <p class="text-[10px] opacity-50 uppercase tracking-tighter">Participation</p>
+                            <p class="text-2xl font-bold text-purple-400">92%</p>
+                            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-400 w-[92%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 space-y-6">
+                        <h3 class="font-bold flex items-center gap-2">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            Export Sustainability Data
+                        </h3>
+                        <div class="space-y-3">
+                            <button @click="exportData('csv')" class="w-full py-3 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between px-4 hover:bg-white/10 transition-colors">
+                                <span class="text-sm">Download ESG Summary (CSV)</span>
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                            </button>
+                            <button @click="window.print()" class="w-full py-3 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between px-4 hover:bg-white/10 transition-colors">
+                                <span class="text-sm">Export ISO 14064 Report (PDF)</span>
+                                <i data-lucide="external-link" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Community Feed Simulation -->
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-lg px-1">Green Community</h3>
+                        <div class="glass-card p-4 space-y-4">
+                            <div class="flex gap-3">
+                                <img src="https://i.pravatar.cc/150?u=4" class="w-10 h-10 rounded-full">
+                                <div class="flex-1">
+                                    <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none">
+                                        <p class="text-xs font-bold text-emerald-400">Admin_Hillkoff</p>
+                                        <p class="text-xs mt-1">วันนี้สาขามหิดลทำสถิติลด Carbon ได้สูงสุด! 🌿🎉</p>
+                                    </div>
+                                    <div class="flex gap-4 mt-2 px-1">
+                                        <button class="flex items-center gap-1 text-[10px] opacity-50"><i data-lucide="heart" class="w-3 h-3"></i> 24</button>
+                                        <button class="flex items-center gap-1 text-[10px] opacity-50"><i data-lucide="message-square" class="w-3 h-3"></i> 5</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-black/80 backdrop-blur-xl border-t border-white/10 px-6 py-4 z-50">
+            <div class="flex justify-between items-center">
+                <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'nav-active' : 'opacity-40'" class="flex flex-col items-center gap-1">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-medium">หน้าหลัก</span>
+                </button>
+                <button @click="activeTab = 'log'" :class="activeTab === 'log' ? 'nav-active' : 'opacity-40'" class="flex flex-col items-center gap-1">
+                    <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-medium">บันทึก</span>
+                </button>
+                <button @click="activeTab = 'ranking'" :class="activeTab === 'ranking' ? 'nav-active' : 'opacity-40'" class="flex flex-col items-center gap-1">
+                    <i data-lucide="trophy" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-medium">Ranking</span>
+                </button>
+                <button @click="activeTab = 'report'" :class="activeTab === 'report' ? 'nav-active' : 'opacity-40'" class="flex flex-col items-center gap-1">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-medium">รายงาน</span>
+                </button>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- App Logic -->
+    <script>
+        function appState() {
+            return {
+                loading: true,
+                activeTab: 'home',
+                totalCarbon: 1.26,
+                todayCarbon: 0.12,
+                monthCarbon: 1.26,
+                totalRecords: 124,
+                analyzing: false,
+                previewImage: null,
+                aiResult: null,
+                formData: {
+                    type: 'coffee',
+                    weight: '',
+                    branch: 'hq'
+                },
+                branches: [
+                    { id: 'hq', name: 'สำนักงานใหญ่', icon: '🏢', carbon: 0.45, records: 45 },
+                    { id: 'cp', name: 'ช้างเผือก', icon: '🐘', carbon: 1.26, records: 12 },
+                    { id: 'md', name: 'มหิดล', icon: '🎓', carbon: 0.82, records: 28 },
+                    { id: 'pp', name: 'ป่าแพ่ง', icon: '🌿', carbon: 0.31, records: 15 },
+                    { id: 'td', name: 'ทับเดื่อ', icon: '🌱', carbon: 0.15, records: 8 },
+                    { id: 'rt', name: 'ราติก้า', icon: '☕', carbon: 0.64, records: 16 }
+                ],
+                rankings: [
+                    { name: 'K. Wittaya', score: 2450, branch: 'สำนักงานใหญ่' },
+                    { name: 'K. Pimpa', score: 2100, branch: 'มหิดล' },
+                    { name: 'K. Somsak', score: 1850, branch: 'ช้างเผือก' },
+                    { name: 'K. Janya', score: 1200, branch: 'ป่าแพ่ง' }
+                ],
+
+                init() {
+                    // Initialize Lucide Icons
+                    lucide.createIcons();
+                    
+                    // Simulate loading
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.initChart();
+                    }, 1500);
+
+                    // Watch for tab change to re-init icons and charts
+                    this.$watch('activeTab', (val) => {
+                        setTimeout(() => {
+                            lucide.createIcons();
+                            if(val === 'home') this.initChart();
+                        }, 50);
+                    });
+                },
+
+                initChart() {
+                    const ctx = document.getElementById('carbonChart')?.getContext('2d');
+                    if (!ctx) return;
+                    
+                    if (window.myChart) window.myChart.destroy();
+                    
+                    window.myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            datasets: [{
+                                label: 'Carbon Saved (kg)',
+                                data: [0.2, 0.5, 0.4, 0.8, 0.6, 1.2, 0.9],
+                                borderColor: '#10B981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3,
+                                pointRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { display: false },
+                                x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } } }
+                            }
+                        }
+                    });
+                },
+
+                handleFileUpload(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (f) => {
+                        this.previewImage = f.target.result;
+                        this.runAIAnalysis();
+                    };
+                    reader.readAsDataURL(file);
+                },
+
+                async runAIAnalysis() {
+                    this.analyzing = true;
+                    
+                    // Simulation of Gemini Vision API call
+                    // In real production, use: fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=YOUR_API_KEY', ...)
+                    
+                    setTimeout(() => {
+                        this.analyzing = false;
+                        this.aiResult = {
+                            type: 'Plastic Bottle (PET)',
+                            confidence: 94,
+                            recommendation: 'ควรล้างคราบเครื่องดื่มออกก่อนนำไปรีไซเคิล'
+                        };
+                        this.formData.type = 'plastic';
+                        lucide.createIcons();
+                    }, 2000);
+                },
+
+                saveLog() {
+                    if (!this.formData.weight) {
+                        alert('กรุณาระบุน้ำหนัก');
+                        return;
+                    }
+
+                    // Update stats
+                    const weightVal = parseFloat(this.formData.weight);
+                    this.totalCarbon = (parseFloat(this.totalCarbon) + (weightVal * 0.5)).toFixed(2);
+                    this.totalRecords++;
+                    
+                    alert('บันทึกข้อมูลสำเร็จ! คุณได้รับ 50 Green Points');
+                    this.activeTab = 'home';
+                    this.previewImage = null;
+                    this.aiResult = null;
+                    this.formData.weight = '';
+                },
+
+                exportData(type) {
+                    const content = "Date,Type,Weight,CarbonSaved,Branch\n2024-05-12,Coffee,1.2,0.6,HQ";
+                    const blob = new Blob([content], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.setAttribute('hidden', '');
+                    a.setAttribute('href', url);
+                    a.setAttribute('download', 'hillkoff_esg_report.csv');
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            }
+        }
+    </script>
+
+    <!-- Animation Keyframes -->
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</body>
+</html>
