@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>HILLKOFF GREEN INTELLIGENCE PLATFORM | Enterprise ESG</title>
+    <title>HILLKOFF GREEN INTELLIGENCE | ENTERPRISE ESG PLATFORM</title>
     
-    <!-- Core Engine & UI Frameworks -->
+    <!-- External Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -15,7 +13,6 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/framer-motion.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100;300;400;500;600;700&display=swap');
@@ -23,7 +20,7 @@
         :root {
             --hk-dark: #022c22;
             --hk-primary: #10b981;
-            --hk-secondary: #34d399;
+            --hk-secondary: #064e3b;
             --hk-accent: #fbbf24;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
@@ -34,90 +31,64 @@
             background-color: var(--hk-dark);
             color: #ecfdf5;
             margin: 0;
-            overscroll-behavior-y: contain;
-            user-select: none;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Glassmorphism Elements */
+        /* Glassmorphism Styling */
         .glass-card {
             background: var(--glass);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
         .glass-nav {
-            background: rgba(2, 44, 34, 0.8);
+            background: rgba(2, 44, 34, 0.9);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--glass-border);
         }
 
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .float-anim { animation: float 6s ease-in-out infinite; }
-
-        .pulse-emerald {
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--hk-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--hk-primary); border-radius: 10px; }
-
-        /* Typography & Utilities */
-        .text-gradient {
-            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .gradient-border {
-            border: 2px solid;
-            border-image-slice: 1;
-            border-image-source: linear-gradient(135deg, #10b981, #065f46);
-        }
-
-        .bottom-nav-active {
-            color: var(--hk-primary);
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #065f46, #022c22);
             position: relative;
         }
 
-        .bottom-nav-active::after {
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade { animation: fadeIn 0.4s ease-out forwards; }
+
+        /* Custom Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        .active-tab-indicator {
+            color: var(--hk-primary);
+            position: relative;
+        }
+        .active-tab-indicator::after {
             content: '';
             position: absolute;
             top: -12px;
-            width: 20px;
-            height: 3px;
+            width: 24px;
+            height: 4px;
             background: var(--hk-primary);
             border-radius: 10px;
             box-shadow: 0 0 15px var(--hk-primary);
         }
 
-        .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
-        
-        /* Mobile-First Constraints */
-        .app-container {
-            max-width: 500px;
-            margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-            background: radial-gradient(circle at top right, #064e3b, #022c22);
+        input:focus, select:focus {
+            border-color: var(--hk-primary) !important;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .carbon-hero-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #064e3b 100%);
         }
     </style>
 </head>
@@ -125,196 +96,231 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        /**
-         * HILLKOFF GREEN INTELLIGENCE PLATFORM
-         * Production Version 2.4.0 (Carbon-Neutral Design)
-         */
-        const { useState, useEffect, useMemo, useRef } = React;
+        const { useState, useEffect, useRef, useMemo } = React;
 
-        // --- GLOBAL CONSTANTS & MOCK DATA ---
+        // --- GLOBAL CONFIGURATION ---
         const BRANCHES = [
             { id: 'HQ', name: 'สำนักงานใหญ่', icon: '🏢' },
             { id: 'CP', name: 'สาขาช้างเผือก', icon: '🐘' },
             { id: 'MH', name: 'สาขามหิดล', icon: '🎓' },
             { id: 'PP', name: 'สาขาป่าแพ่ง', icon: '🌿' },
-            { id: 'TD', name: 'สาขาทับเดื่อ', icon: '🌱' },
             { id: 'RT', name: 'สาขาราติก้า', icon: '☕' }
         ];
 
-        const WASTE_CONFIG = {
+        const WASTE_TYPES = {
             coffee: { name: 'กากกาแฟ', factor: 0.51, unit: 'kg', icon: '☕', color: '#78350f' },
             plastic: { name: 'พลาสติก', factor: 2.52, unit: 'kg', icon: '🥤', color: '#2563eb' },
             paper: { name: 'กระดาษ', factor: 1.58, unit: 'kg', icon: '📄', color: '#d97706' },
-            food: { name: 'เศษอาหาร', factor: 0.19, unit: 'kg', icon: '🍎', color: '#dc2626' },
-            glass: { name: 'แก้ว', factor: 0.60, unit: 'kg', icon: '🍾', color: '#059669' },
-            aluminum: { name: 'อะลูมิเนียม', factor: 9.08, unit: 'kg', icon: '🥫', color: '#64748b' }
+            food: { name: 'เศษอาหาร', factor: 0.19, unit: 'kg', icon: '🍎', color: '#dc2626' }
         };
 
-        const ACHIEVEMENT_BADGES = [
-            { id: 1, name: 'Eco Warrior', icon: '🛡️', desc: 'บันทึกข้อมูลติดต่อกัน 7 วัน' },
-            { id: 2, name: 'Carbon Killer', icon: '⚔️', desc: 'ลด Carbon ได้มากกว่า 100kg' },
-            { id: 3, name: 'Zero Hero', icon: '🦸', desc: 'คัดแยกขยะถูกต้อง 100%' }
-        ];
-
-        // --- MATH UTILITIES ---
-        // Carbon Saving Formula: $$CO_2e = Weight \times Emission Factor$$
-        const calculateCarbon = (weight, type) => {
-            return (weight * WASTE_CONFIG[type].factor).toFixed(2);
+        // --- UTILITY FUNCTIONS ---
+        const calculateCarbon = (weight, type) => (weight * WASTE_TYPES[type].factor).toFixed(2);
+        
+        const getLocalStorage = (key, defaultValue) => {
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : defaultValue;
         };
 
-        // --- COMPONENTS ---
+        // --- MAIN APPLICATION COMPONENT ---
+        const App = () => {
+            const [user, setUser] = useState(() => getLocalStorage('hk_user_session', null));
+            const [activeTab, setActiveTab] = useState('home');
+            const [logs, setLogs] = useState(() => getLocalStorage('hk_waste_logs', []));
 
-        // 1. Reusable UI Components
-        const GlassCard = ({ children, className = "" }) => (
-            <div className={`glass-card rounded-[2rem] p-6 ${className}`}>
-                {children}
-            </div>
-        );
+            // Sync User to LocalStorage
+            useEffect(() => {
+                if (user) localStorage.setItem('hk_user_session', JSON.stringify(user));
+            }, [user]);
 
-        const KPIIndicator = ({ label, value, unit, icon, colorClass }) => (
-            <div className="flex flex-col">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 ${colorClass}`}>
-                    <i className={`fas ${icon} text-white`}></i>
-                </div>
-                <span className="text-[10px] uppercase tracking-wider opacity-60">{label}</span>
-                <div className="flex items-baseline gap-1">
-                    <span className="text-xl font-bold">{value}</span>
-                    <span className="text-[10px] opacity-40">{unit}</span>
-                </div>
-            </div>
-        );
+            // Sync Logs to LocalStorage
+            useEffect(() => {
+                localStorage.setItem('hk_waste_logs', JSON.stringify(logs));
+            }, [logs]);
 
-        // 2. Auth / Login Layer
-        const AuthLayer = ({ onLogin }) => {
-            const [step, setStep] = useState(1);
-            const [loading, setLoading] = useState(false);
-
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                setLoading(true);
-                const formData = new FormData(e.target);
-                setTimeout(() => {
-                    onLogin({
-                        name: formData.get('nickname'),
-                        branch: formData.get('branch'),
-                        role: 'Employee',
-                        points: 1250,
-                        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${formData.get('nickname')}`
-                    });
-                    setLoading(false);
-                }, 1500);
+            const handleLogin = (loginData) => {
+                setUser({
+                    ...loginData,
+                    points: 1250, // Starting points
+                    joinedDate: new Date().toLocaleDateString('th-TH')
+                });
             };
 
+            const handleLogout = () => {
+                Swal.fire({
+                    title: 'ยืนยันการออกจากระบบ?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10b981',
+                    cancelButtonColor: '#374151',
+                    background: '#022c22',
+                    color: '#fff'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        localStorage.removeItem('hk_user_session');
+                        setUser(null);
+                    }
+                });
+            };
+
+            const addNewLog = (entry) => {
+                const newLog = {
+                    ...entry,
+                    id: Date.now(),
+                    timestamp: new Date().toLocaleString('th-TH'),
+                    userName: user.name,
+                    branch: user.branch
+                };
+                setLogs(prev => [newLog, ...prev]);
+            };
+
+            if (!user) return <LoginPage onLogin={handleLogin} />;
+
             return (
-                <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center animate-fade-in">
-                    <div className="mb-12 relative">
-                        <div className="w-24 h-24 bg-white rounded-[2.5rem] flex items-center justify-center shadow-2xl rotate-12 float-anim">
-                            <img src="https://raw.githubusercontent.com/HillkoffZeroWaste/02/main/logo.png" className="w-16 h-16 object-contain" onError={(e) => e.target.src = '☕'} />
+                <div className="app-container flex flex-col shadow-2xl">
+                    {/* Header */}
+                    <header className="p-6 flex justify-between items-center z-10">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                                <i className="fas fa-leaf text-emerald-950 text-xl"></i>
+                            </div>
+                            <div>
+                                <h1 className="text-sm font-black uppercase tracking-tighter leading-none">Hillkoff</h1>
+                                <p className="text-[9px] font-bold text-emerald-500 tracking-[0.2em] uppercase">Intelligence</p>
+                            </div>
                         </div>
-                        <div className="absolute -bottom-2 -right-2 bg-emerald-500 w-8 h-8 rounded-full border-4 border-emerald-900 flex items-center justify-center">
-                            <i className="fas fa-check text-[10px]"></i>
-                        </div>
-                    </div>
-
-                    <h1 className="text-3xl font-black mb-2 tracking-tighter uppercase">Hillkoff</h1>
-                    <p className="text-emerald-400 font-bold text-xs uppercase tracking-[0.4em] mb-12">Green Intelligence</p>
-
-                    <form onSubmit={handleSubmit} className="w-full space-y-4">
-                        <div className="relative">
-                            <i className="fas fa-user absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500/50"></i>
-                            <input name="nickname" required placeholder="ชื่อเล่นหรือรหัสพนักงาน" className="w-full bg-white/5 border border-white/10 p-5 pl-14 rounded-3xl outline-none focus:border-emerald-500 transition-all text-white" />
-                        </div>
-                        <div className="relative">
-                            <i className="fas fa-building absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500/50"></i>
-                            <select name="branch" className="w-full bg-white/5 border border-white/10 p-5 pl-14 rounded-3xl outline-none focus:border-emerald-500 appearance-none text-white">
-                                {BRANCHES.map(b => <option key={b.id} value={b.name} className="text-emerald-900">{b.name}</option>)}
-                            </select>
-                        </div>
-                        <button type="submit" disabled={loading} className="w-full bg-emerald-500 hover:bg-emerald-400 py-5 rounded-3xl text-emerald-950 font-black text-lg shadow-xl shadow-emerald-900/20 transition-all active:scale-95 disabled:opacity-50">
-                            {loading ? <i className="fas fa-circle-notch animate-spin"></i> : 'เข้าสู่ระบบสีเขียว'}
+                        <button onClick={handleLogout} className="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-red-400">
+                            <i className="fas fa-power-off text-sm"></i>
                         </button>
-                    </form>
-                    <p className="mt-8 text-[10px] opacity-30 uppercase tracking-widest">Enterprise Sustainability Management</p>
+                    </header>
+
+                    {/* Content Area */}
+                    <main className="flex-1 overflow-y-auto no-scrollbar pb-32">
+                        {activeTab === 'home' && <HomeView user={user} logs={logs} />}
+                        {activeTab === 'record' && <RecordView user={user} onSave={addNewLog} onComplete={() => setActiveTab('home')} />}
+                        {activeTab === 'analytics' && <AnalyticsView logs={logs} user={user} />}
+                        {activeTab === 'rank' && <RankingView logs={logs} user={user} />}
+                        {activeTab === 'social' && <SocialView user={user} />}
+                        {activeTab === 'policy' && <PolicyView />}
+                    </main>
+
+                    {/* Bottom Navigation */}
+                    <nav className="fixed bottom-0 left-0 right-0 glass-nav h-24 flex justify-around items-center px-4 z-50 rounded-t-[2.5rem]">
+                        <NavButton id="home" icon="fa-home" label="Home" activeTab={activeTab} onClick={setActiveTab} />
+                        <NavButton id="record" icon="fa-plus-circle" label="Record" activeTab={activeTab} onClick={setActiveTab} />
+                        <NavButton id="analytics" icon="fa-chart-pie" label="ESG" activeTab={activeTab} onClick={setActiveTab} />
+                        <NavButton id="rank" icon="fa-award" label="Rank" activeTab={activeTab} onClick={setActiveTab} />
+                        <NavButton id="social" icon="fa-comments" label="Social" activeTab={activeTab} onClick={setActiveTab} />
+                        <NavButton id="policy" icon="fa-shield-halved" label="Policy" activeTab={activeTab} onClick={setActiveTab} />
+                    </nav>
                 </div>
             );
         };
 
-        // 3. Main Dashboard
-        const HomeDashboard = ({ user }) => {
-            const chartRef = useRef(null);
+        // --- SUB-COMPONENTS ---
 
-            useEffect(() => {
-                if (chartRef.current) {
-                    const ctx = chartRef.current.getContext('2d');
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                            datasets: [{
-                                label: 'Carbon Saved',
-                                data: [12, 19, 15, 25, 22, 30, 28],
-                                borderColor: '#10b981',
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: false } },
-                            scales: { 
-                                x: { display: false },
-                                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 8 } } } 
-                            }
-                        }
-                    });
-                }
-            }, []);
+        const NavButton = ({ id, icon, label, activeTab, onClick }) => {
+            const isActive = activeTab === id;
+            return (
+                <button onClick={() => onClick(id)} className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'active-tab-indicator scale-110' : 'opacity-30'}`}>
+                    <i className={`fas ${icon} ${isActive ? 'text-xl' : 'text-lg'}`}></i>
+                    <span className="text-[8px] font-black uppercase tracking-widest">{label}</span>
+                </button>
+            );
+        };
+
+        const LoginPage = ({ onLogin }) => {
+            const [formData, setFormData] = useState({ name: '', branch: 'สาขาช้างเผือก' });
+            
+            const submitForm = (e) => {
+                e.preventDefault();
+                if (formData.name.trim().length < 2) return Swal.fire('กรุณาระบุชื่อที่ถูกต้อง', '', 'warning');
+                onLogin(formData);
+            };
 
             return (
-                <div className="pb-32 px-6 pt-8 space-y-8 animate-fade-in overflow-x-hidden">
-                    {/* Top User Info */}
+                <div className="app-container flex flex-col items-center justify-center p-8 animate-fade">
+                    <div className="mb-12 text-center">
+                        <div className="w-24 h-24 bg-white rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center shadow-2xl rotate-3">
+                            <img src="https://raw.githubusercontent.com/HillkoffZeroWaste/02/main/logo.png" className="w-16 h-16 object-contain" onError={(e) => e.target.src='☕'} />
+                        </div>
+                        <h2 className="text-3xl font-black mb-1 uppercase tracking-tighter">ยินดีต้อนรับ</h2>
+                        <p className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Hillkoff Green Community</p>
+                    </div>
+
+                    <form onSubmit={submitForm} className="w-full space-y-4">
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-bold uppercase opacity-50 ml-4 tracking-widest">Nickname / Employee ID</label>
+                            <input 
+                                required
+                                value={formData.name}
+                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                placeholder="ระบุชื่อเล่นหรือรหัสพนักงาน" 
+                                className="w-full bg-white/5 border border-white/10 p-5 rounded-3xl outline-none text-white font-bold" 
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-bold uppercase opacity-50 ml-4 tracking-widest">Work Branch</label>
+                            <select 
+                                value={formData.branch}
+                                onChange={(e) => setFormData({...formData, branch: e.target.value})}
+                                className="w-full bg-white/5 border border-white/10 p-5 rounded-3xl outline-none appearance-none font-bold"
+                            >
+                                {BRANCHES.map(b => <option key={b.id} value={b.name} className="text-emerald-900">{b.name}</option>)}
+                            </select>
+                        </div>
+                        <button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-400 py-5 rounded-3xl text-emerald-950 font-black text-lg shadow-xl shadow-emerald-500/20 transition-all active:scale-95">
+                            เริ่มสร้างโลกสีเขียว
+                        </button>
+                    </form>
+                    <p className="mt-12 text-[10px] opacity-30 uppercase tracking-[0.3em]">Enterprise ESG Management System</p>
+                </div>
+            );
+        };
+
+        const HomeView = ({ user, logs }) => {
+            const myLogs = useMemo(() => logs.filter(l => l.userName === user.name), [logs, user.name]);
+            const totalCarbon = useMemo(() => myLogs.reduce((acc, curr) => acc + parseFloat(curr.carbon), 0).toFixed(2), [myLogs]);
+            const totalPoints = useMemo(() => user.points + myLogs.reduce((acc, curr) => acc + curr.points, 0), [myLogs, user.points]);
+
+            return (
+                <div className="p-6 space-y-8 animate-fade">
                     <div className="flex justify-between items-center">
                         <div className="flex items-center gap-3">
-                            <div className="relative">
-                                <img src={user.avatar} className="w-12 h-12 rounded-2xl bg-emerald-500/20 p-1 border border-emerald-500/30" />
-                                <div className="absolute -top-1 -right-1 bg-yellow-400 w-4 h-4 rounded-full flex items-center justify-center text-[8px] text-emerald-900 border-2 border-emerald-900 font-bold">L4</div>
+                            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-1">
+                                <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${user.name}`} className="rounded-xl" />
                             </div>
                             <div>
                                 <h3 className="font-bold text-lg leading-none">{user.name}</h3>
-                                <p className="text-[10px] text-emerald-500/60 uppercase font-bold tracking-tighter mt-1">{user.branch}</p>
+                                <p className="text-[10px] text-emerald-500 font-bold uppercase tracking-tighter mt-1">{user.branch}</p>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            <div className="w-10 h-10 rounded-2xl glass-card flex items-center justify-center text-emerald-500 border-emerald-500/20">
-                                <i className="fas fa-bell text-sm"></i>
-                            </div>
-                            <div className="w-10 h-10 rounded-2xl glass-card flex items-center justify-center text-emerald-500 border-emerald-500/20">
-                                <i className="fas fa-cog text-sm"></i>
-                            </div>
+                        <div className="text-right">
+                            <p className="text-[8px] opacity-40 uppercase font-bold tracking-widest leading-none mb-1">Joined Since</p>
+                            <p className="text-[10px] font-bold">{user.joinedDate}</p>
                         </div>
                     </div>
 
-                    {/* Carbon Impact Hero */}
-                    <div className="bg-emerald-600 rounded-[3rem] p-8 text-white relative overflow-hidden shadow-2xl shadow-emerald-900/40">
+                    <div className="carbon-hero-gradient rounded-[3rem] p-8 text-white relative shadow-2xl overflow-hidden">
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 mb-2 opacity-80">
                                 <i className="fas fa-leaf text-xs"></i>
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Your Carbon Impact</span>
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Carbon Reduction Effect</span>
                             </div>
-                            <h2 className="text-6xl font-black mb-4 tracking-tighter">12.4 <span className="text-xl font-normal opacity-60">kgCO₂e</span></h2>
+                            <h2 className="text-7xl font-black mb-4 tracking-tighter leading-none">
+                                {totalCarbon} <span className="text-xl font-normal opacity-70">kgCO₂e</span>
+                            </h2>
                             <div className="flex justify-between items-end">
-                                <div className="space-y-1">
-                                    <p className="text-[10px] opacity-70">คะแนนสะสมความดี</p>
-                                    <div className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold w-fit">
-                                        ✨ {user.points} Green Points
-                                    </div>
+                                <div className="bg-emerald-950/30 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">
+                                    <p className="text-[9px] opacity-70 uppercase font-bold mb-1">Green Balance</p>
+                                    <div className="font-black text-sm">✨ {totalPoints.toLocaleString()} Points</div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-[10px] opacity-70 mb-1">เทียบเท่าการปลูกต้นไม้</p>
+                                    <p className="text-[9px] opacity-70 uppercase font-bold mb-1">Trees Equivalent</p>
                                     <div className="flex gap-1 justify-end">
-                                        {[1,2,3].map(i => <i key={i} className="fas fa-tree text-emerald-300 text-xs"></i>)}
+                                        {Array.from({length: Math.min(Math.ceil(totalCarbon/10), 5)}).map((_, i) => (
+                                            <i key={i} className="fas fa-tree text-emerald-300 text-[10px]"></i>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -323,467 +329,248 @@
                         <div className="absolute -bottom-20 -left-10 w-64 h-64 bg-emerald-400/20 rounded-full blur-3xl"></div>
                     </div>
 
-                    {/* KPI Quick Look */}
-                    <div className="grid grid-cols-3 gap-4">
-                        <KPIIndicator label="Zero Waste" value="94" unit="%" icon="fa-recycle" colorClass="bg-blue-500" />
-                        <KPIIndicator label="Ranking" value="#4" unit="รายคน" icon="fa-trophy" colorClass="bg-orange-500" />
-                        <KPIIndicator label="Activity" value="28" unit="วัน" icon="fa-calendar-check" colorClass="bg-purple-500" />
-                    </div>
-
-                    {/* Activity Chart */}
-                    <GlassCard>
-                        <div className="flex justify-between items-center mb-6">
-                            <div>
-                                <h4 className="font-bold text-sm uppercase tracking-wider">Carbon Savings Trend</h4>
-                                <p className="text-[10px] opacity-40">Monthly performance analytics</p>
-                            </div>
-                            <div className="text-emerald-500 text-xs font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+14.2%</div>
-                        </div>
-                        <div className="h-40 w-full">
-                            <canvas ref={chartRef}></canvas>
-                        </div>
-                    </GlassCard>
-
-                    {/* Branch Status */}
                     <div className="space-y-4">
-                        <h4 className="font-bold text-sm uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-4 bg-emerald-500 rounded-full"></span>
-                            Branch Status Summary
-                        </h4>
-                        <div className="grid grid-cols-2 gap-3">
-                            {BRANCHES.map((b, i) => (
-                                <div key={b.id} className="glass-card p-4 rounded-[1.5rem] flex items-center gap-3 active:scale-95 transition-all">
-                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-lg">{b.icon}</div>
-                                    <div>
-                                        <p className="text-[10px] font-bold opacity-40 leading-none mb-1">{b.id}</p>
-                                        <p className="text-xs font-bold">{b.name.replace('สาขา', '')}</p>
-                                    </div>
+                        <div className="flex justify-between items-center px-2">
+                            <h4 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
+                                Recent Activity
+                            </h4>
+                            <span className="text-[9px] font-bold text-emerald-500 opacity-60 uppercase">View All</span>
+                        </div>
+                        
+                        <div className="space-y-3">
+                            {myLogs.length === 0 ? (
+                                <div className="glass-card p-10 rounded-[2.5rem] text-center opacity-40">
+                                    <i className="fas fa-box-open text-3xl mb-3 block"></i>
+                                    <p className="text-xs font-bold uppercase tracking-widest">ยังไม่มีประวัติการบันทึก</p>
                                 </div>
-                            ))}
+                            ) : (
+                                myLogs.slice(0, 5).map(log => (
+                                    <div key={log.id} className="glass-card p-5 rounded-[2rem] flex justify-between items-center active:bg-white/5 transition-all">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-2xl shadow-inner">
+                                                {WASTE_TYPES[log.type].icon}
+                                            </div>
+                                            <div>
+                                                <h5 className="text-sm font-bold">{WASTE_TYPES[log.type].name}</h5>
+                                                <p className="text-[9px] opacity-40 font-bold uppercase tracking-tighter">{log.timestamp}</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-sm font-black text-emerald-400">-{log.carbon} <span className="text-[9px] font-normal">kg</span></p>
+                                            <p className="text-[8px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-bold inline-block">+{log.points} pts</p>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>
             );
         };
 
-        // 4. Waste Management System (with Gemini AI Logic)
-        const WasteManagement = ({ user }) => {
+        const RecordView = ({ user, onSave, onComplete }) => {
             const [step, setStep] = useState(1);
-            const [imgFile, setImgFile] = useState(null);
-            const [isAnalyzing, setIsAnalyzing] = useState(false);
-            const [aiResult, setAiResult] = useState(null);
-            const [formData, setFormData] = useState({ weight: '', type: 'coffee', note: '' });
+            const [selectedType, setSelectedType] = useState('coffee');
+            const [weight, setWeight] = useState('');
+            const [isSaving, setIsSaving] = useState(false);
 
-            const handleFile = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    setImgFile(URL.createObjectURL(file));
-                    analyzeWithGemini();
-                }
-            };
+            const handleFinalSave = () => {
+                if (!weight || weight <= 0) return Swal.fire('กรุณาระบุน้ำหนักที่ถูกต้อง', '', 'warning');
+                
+                setIsSaving(true);
+                const carbon = calculateCarbon(weight, selectedType);
+                const points = Math.floor(weight * 10);
 
-            const analyzeWithGemini = () => {
-                setIsAnalyzing(true);
-                // Production Implementation: Here you would call fetch('GEMINI_API_URL')
-                // For this demo, we simulate the high-confidence analysis
                 setTimeout(() => {
-                    setAiResult({
-                        label: 'Coffee Grounds (กากกาแฟ)',
-                        confidence: 0.985,
-                        type: 'coffee',
-                        reccomendation: 'ขยะสะอาด สามารถนำไปเป็นปุ๋ยหรือวัสดุดูดกลิ่นได้ทันที'
+                    onSave({
+                        type: selectedType,
+                        weight: parseFloat(weight),
+                        carbon: carbon,
+                        points: points
                     });
-                    setIsAnalyzing(false);
-                    setStep(2);
-                }, 2500);
-            };
-
-            const resetForm = () => {
-                setStep(1);
-                setImgFile(null);
-                setAiResult(null);
-                setFormData({ weight: '', type: 'coffee', note: '' });
+                    
+                    Swal.fire({
+                        title: 'บันทึกสำเร็จ!',
+                        html: `<div class="text-xs">สาขา ${user.branch} ลดคาร์บอนเพิ่ม <b>${carbon} kg</b></div>`,
+                        icon: 'success',
+                        background: '#022c22',
+                        color: '#fff',
+                        confirmButtonColor: '#10b981'
+                    });
+                    setIsSaving(false);
+                    onComplete();
+                }, 1200);
             };
 
             return (
-                <div className="p-6 pb-32 space-y-6 animate-fade-in">
-                    <header className="mb-8">
-                        <h2 className="text-2xl font-black">บันทึกข้อมูลขยะ</h2>
-                        <p className="text-emerald-400/60 text-xs font-bold uppercase tracking-[0.2em]">Zero Waste Tracking System</p>
+                <div className="p-6 space-y-8 animate-fade">
+                    <header className="mb-2">
+                        <h2 className="text-2xl font-black uppercase">บันทึกข้อมูล</h2>
+                        <p className="text-emerald-400/60 text-[10px] font-bold tracking-[0.2em] uppercase">Add New Waste Entry</p>
                     </header>
 
-                    {step === 1 && (
-                        <div className="space-y-6">
-                            <div className="bg-emerald-500/10 border-2 border-dashed border-emerald-500/30 rounded-[3rem] p-12 text-center relative overflow-hidden active:scale-95 transition-all">
-                                <input type="file" id="waste-camera" accept="image/*" capture="environment" className="hidden" onChange={handleFile} />
-                                <label htmlFor="waste-camera" className="cursor-pointer block">
-                                    <div className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-500/30 pulse-emerald">
-                                        <i className="fas fa-camera text-3xl text-emerald-950"></i>
-                                    </div>
-                                    <h3 className="font-bold text-lg mb-2">ถ่ายรูปเพื่อวิเคราะห์</h3>
-                                    <p className="text-[10px] opacity-40 uppercase font-bold tracking-widest">Powered by Gemini Vision AI</p>
-                                </label>
-                            </div>
-                            
-                            <div className="glass-card p-6 rounded-[2rem] border-l-4 border-emerald-500">
-                                <h4 className="text-xs font-bold mb-2 uppercase opacity-60 tracking-widest">ทำไมต้องถ่ายรูป?</h4>
-                                <ul className="text-xs space-y-2 opacity-80">
-                                    <li className="flex gap-2"><i className="fas fa-check text-emerald-500"></i> ป้องกันการบันทึกข้อมูลผิดพลาด</li>
-                                    <li className="flex gap-2"><i className="fas fa-check text-emerald-500"></i> ตรวจสอบความถูกต้องของการคัดแยก</li>
-                                    <li className="flex gap-2"><i className="fas fa-check text-emerald-500"></i> คำนวณ Carbon ได้แม่นยำ 100%</li>
-                                </ul>
-                            </div>
-                        </div>
-                    )}
-
-                    {isAnalyzing && (
-                        <div className="flex flex-col items-center justify-center py-20 animate-pulse">
-                            <div className="relative w-32 h-32 mb-8">
-                                <div className="absolute inset-0 border-4 border-emerald-500 rounded-full animate-ping opacity-20"></div>
-                                <div className="absolute inset-0 border-4 border-t-emerald-500 rounded-full animate-spin"></div>
-                                <i className="fas fa-microchip text-5xl text-emerald-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
-                            </div>
-                            <h4 className="text-xl font-bold mb-2">กำลังตรวจสอบรูปภาพ...</h4>
-                            <p className="text-xs opacity-50 uppercase tracking-widest">Gemini 1.5 Pro Analyzing</p>
-                        </div>
-                    )}
-
-                    {step === 2 && aiResult && (
-                        <div className="space-y-6 animate-fade-in">
-                            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl">
-                                <img src={imgFile} className="w-full h-56 object-cover" />
-                                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-xl px-4 py-2 rounded-2xl text-[10px] border border-white/10 flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                                    AI ประมวลผลสำเร็จ ({(aiResult.confidence * 100).toFixed(1)}%)
-                                </div>
-                            </div>
-
-                            <div className="bg-emerald-600 rounded-[2rem] p-6">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">☕</div>
-                                    <div>
-                                        <p className="text-[10px] font-bold uppercase opacity-70 mb-1">ประเภทขยะที่ตรวจพบ</p>
-                                        <h4 className="text-xl font-black">{aiResult.label}</h4>
-                                    </div>
-                                </div>
-                                <div className="bg-black/20 p-4 rounded-2xl text-xs leading-relaxed italic opacity-90">
-                                    " {aiResult.reccomendation} "
-                                </div>
-                            </div>
-
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-50">ระบุน้ำหนัก (กิโลกรัม)</label>
-                                    <input 
-                                        type="number" 
-                                        placeholder="0.00" 
-                                        className="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-emerald-500 text-3xl font-black text-emerald-400" 
-                                        value={formData.weight}
-                                        onChange={(e) => setFormData({...formData, weight: e.target.value})}
-                                    />
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="glass-card p-4 rounded-2xl">
-                                        <p className="text-[10px] opacity-40 uppercase font-bold mb-1">Carbon Saved</p>
-                                        <p className="text-lg font-bold">{calculateCarbon(formData.weight || 0, aiResult.type)} kg</p>
-                                    </div>
-                                    <div className="glass-card p-4 rounded-2xl border-emerald-500/30 border">
-                                        <p className="text-[10px] opacity-40 uppercase font-bold mb-1">Green Score</p>
-                                        <p className="text-lg font-bold text-emerald-400">+{Math.floor(formData.weight * 10 || 0)} pts</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-3 pt-4">
-                                    <button onClick={resetForm} className="flex-1 bg-white/5 py-5 rounded-3xl font-bold active:scale-95 transition-all">ยกเลิก</button>
-                                    <button onClick={() => {
-                                        Swal.fire({
-                                            title: 'บันทึกสำเร็จ!',
-                                            text: `คุณได้รับ ${Math.floor(formData.weight * 10)} คะแนนความดี`,
-                                            icon: 'success',
-                                            background: '#022c22',
-                                            color: '#fff',
-                                            confirmButtonColor: '#10b981'
-                                        });
-                                        resetForm();
-                                    }} className="flex-[2] bg-emerald-500 py-5 rounded-3xl text-emerald-950 font-black shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">
-                                        ยืนยันการบันทึก
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
-
-        // 5. Analytics & ESG Report
-        const ESGAnalytics = () => {
-            const barRef = useRef(null);
-            const pieRef = useRef(null);
-
-            useEffect(() => {
-                if (barRef.current) {
-                    new Chart(barRef.current, {
-                        type: 'bar',
-                        data: {
-                            labels: BRANCHES.map(b => b.id),
-                            datasets: [{
-                                label: 'CO2 Reduced (kg)',
-                                data: [120, 95, 88, 70, 45, 30],
-                                backgroundColor: '#10b981',
-                                borderRadius: 10
-                            }]
-                        },
-                        options: {
-                            plugins: { legend: { display: false } },
-                            scales: { 
-                                x: { ticks: { color: '#ffffff40' }, grid: { display: false } },
-                                y: { ticks: { color: '#ffffff40' }, grid: { color: '#ffffff05' } }
-                            }
-                        }
-                    });
-                }
-                if (pieRef.current) {
-                    new Chart(pieRef.current, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['กากกาแฟ', 'พลาสติก', 'กระดาษ', 'อื่นๆ'],
-                            datasets: [{
-                                data: [65, 15, 12, 8],
-                                backgroundColor: ['#78350f', '#2563eb', '#d97706', '#64748b'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            plugins: { legend: { position: 'bottom', labels: { color: 'white', font: { size: 10 } } } },
-                            cutout: '70%'
-                        }
-                    });
-                }
-            }, []);
-
-            return (
-                <div className="p-6 pb-32 space-y-8 animate-fade-in">
-                    <header>
-                        <h2 className="text-2xl font-black">Green Intelligence</h2>
-                        <p className="text-emerald-400/60 text-xs font-bold uppercase tracking-[0.2em]">Enterprise ESG Analytics</p>
-                    </header>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="glass-card p-5 rounded-[2rem]">
-                            <p className="text-[10px] font-bold opacity-40 uppercase mb-2">Total Carbon Reduction</p>
-                            <h4 className="text-2xl font-black text-emerald-400">1,245.8 <span className="text-[10px] text-white opacity-40">kg</span></h4>
-                        </div>
-                        <div className="glass-card p-5 rounded-[2rem]">
-                            <p className="text-[10px] font-bold opacity-40 uppercase mb-2">Waste Diversion Rate</p>
-                            <h4 className="text-2xl font-black text-blue-400">92.4 <span className="text-[10px] text-white opacity-40">%</span></h4>
-                        </div>
-                    </div>
-
-                    <GlassCard>
-                        <h4 className="text-xs font-bold uppercase tracking-widest mb-6 opacity-60">Carbon Saving by Branch</h4>
-                        <div className="h-48">
-                            <canvas ref={barRef}></canvas>
-                        </div>
-                    </GlassCard>
-
-                    <GlassCard>
-                        <h4 className="text-xs font-bold uppercase tracking-widest mb-6 opacity-60">Waste Distribution</h4>
-                        <div className="h-56">
-                            <canvas ref={pieRef}></canvas>
-                        </div>
-                    </GlassCard>
-
+                    {/* Step 1: Select Type */}
                     <div className="space-y-4">
-                        <h4 className="font-bold text-sm uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-4 bg-emerald-500 rounded-full"></span>
-                            ESG Report Standards
-                        </h4>
-                        <div className="space-y-2">
-                            {[
-                                { name: 'ISO 14064-1:2018', status: 'Compliant' },
-                                { name: 'SDG 12: Responsible Consumption', status: 'Active' },
-                                { name: 'GHG Protocol Standard', status: 'Verified' }
-                            ].map(std => (
-                                <div key={std.name} className="glass-card p-4 rounded-2xl flex justify-between items-center border-l-4 border-blue-500">
-                                    <span className="text-xs font-bold">{std.name}</span>
-                                    <span className="text-[8px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full uppercase font-bold">{std.status}</span>
-                                </div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-2">1. เลือกประเภทขยะ</p>
+                        <div className="grid grid-cols-2 gap-3">
+                            {Object.entries(WASTE_TYPES).map(([key, val]) => (
+                                <button 
+                                    key={key}
+                                    onClick={() => setSelectedType(key)}
+                                    className={`p-5 rounded-[2rem] flex items-center gap-4 border-2 transition-all ${selectedType === key ? 'border-emerald-500 bg-emerald-500/10 scale-105' : 'border-white/5 bg-white/5 opacity-50'}`}
+                                >
+                                    <span className="text-2xl">{val.icon}</span>
+                                    <span className="text-xs font-bold uppercase tracking-wider">{val.name}</span>
+                                </button>
                             ))}
                         </div>
                     </div>
 
-                    <button className="w-full bg-white/10 p-5 rounded-3xl border border-white/10 flex items-center justify-center gap-4 font-bold active:scale-95 transition-all">
-                        <i className="fas fa-file-pdf text-red-500"></i>
-                        Download Full ESG Report
+                    {/* Step 2: Weight Input */}
+                    <div className="space-y-4">
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-2">2. ระบุน้ำหนัก (กิโลกรัม)</p>
+                        <div className="relative">
+                            <input 
+                                type="number" 
+                                value={weight}
+                                onChange={(e) => setWeight(e.target.value)}
+                                placeholder="0.00" 
+                                className="w-full bg-white/5 border-2 border-white/10 p-10 rounded-[3rem] text-6xl font-black text-center text-emerald-400 outline-none focus:border-emerald-500 transition-all" 
+                            />
+                            <div className="absolute right-10 top-1/2 -translate-y-1/2 text-xl font-bold opacity-20 uppercase">KG</div>
+                        </div>
+                    </div>
+
+                    {/* Live Preview Card */}
+                    {weight > 0 && (
+                        <div className="glass-card p-6 rounded-[2.5rem] border-emerald-500/20 border-2 animate-fade">
+                            <div className="flex justify-between items-center mb-4 pb-4 border-b border-white/10">
+                                <div className="text-[10px] font-bold uppercase opacity-40 tracking-widest">Environmental Impact</div>
+                                <div className="text-emerald-500 text-[10px] font-bold uppercase tracking-widest">Preview</div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-6">
+                                <div>
+                                    <p className="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-tighter">Carbon Reduction</p>
+                                    <p className="text-2xl font-black">{calculateCarbon(weight, selectedType)} <span className="text-[10px] font-normal opacity-50">kg</span></p>
+                                </div>
+                                <div>
+                                    <p className="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-tighter">Points to Earn</p>
+                                    <p className="text-2xl font-black text-yellow-400">+{Math.floor(weight * 10)} <span className="text-[10px] font-normal opacity-50">PTS</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <button 
+                        onClick={handleFinalSave}
+                        disabled={isSaving || !weight}
+                        className="w-full bg-emerald-500 disabled:opacity-30 py-6 rounded-[2.5rem] text-emerald-950 font-black text-xl shadow-xl shadow-emerald-500/30 transition-all active:scale-95 flex items-center justify-center gap-3"
+                    >
+                        {isSaving ? <i className="fas fa-circle-notch animate-spin"></i> : <i className="fas fa-check-circle"></i>}
+                        ยืนยันการบันทึกข้อมูล
                     </button>
                 </div>
             );
         };
 
-        // 6. Ranking & Leaderboard
-        const Leaderboard = () => {
-            const [mode, setMode] = useState('individual');
+        const AnalyticsView = ({ logs, user }) => {
+            const chartRef = useRef(null);
+
+            // คำนวณข้อมูลสำหรับรายงาน
+            const stats = useMemo(() => {
+                const totalC = logs.reduce((acc, curr) => acc + parseFloat(curr.carbon), 0);
+                const myC = logs.filter(l => l.userName === user.name).reduce((acc, curr) => acc + parseFloat(curr.carbon), 0);
+                const branchC = logs.filter(l => l.branch === user.branch).reduce((acc, curr) => acc + parseFloat(curr.carbon), 0);
+                
+                return { 
+                    total: totalC.toFixed(1), 
+                    personal: myC.toFixed(1), 
+                    branch: branchC.toFixed(1),
+                    wasteShare: Object.keys(WASTE_TYPES).map(type => ({
+                        type,
+                        weight: logs.filter(l => l.type === type).reduce((acc, curr) => acc + curr.weight, 0)
+                    }))
+                };
+            }, [logs, user]);
+
+            useEffect(() => {
+                if (chartRef.current && logs.length > 0) {
+                    const ctx = chartRef.current.getContext('2d');
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: stats.wasteShare.map(s => WASTE_TYPES[s.type].name),
+                            datasets: [{
+                                data: stats.wasteShare.map(s => s.weight),
+                                backgroundColor: stats.wasteShare.map(s => WASTE_TYPES[s.type].color),
+                                borderWidth: 0,
+                                hoverOffset: 10
+                            }]
+                        },
+                        options: {
+                            plugins: { 
+                                legend: { 
+                                    position: 'bottom', 
+                                    labels: { color: 'white', font: { family: 'Anuphan', size: 10 }, padding: 20 } 
+                                } 
+                            },
+                            cutout: '75%',
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+            }, [stats, logs.length]);
+
             return (
-                <div className="p-6 pb-32 space-y-8 animate-fade-in">
+                <div className="p-6 space-y-8 animate-fade">
                     <header>
-                        <h2 className="text-2xl font-black">Hall of Sustainability</h2>
-                        <p className="text-emerald-400/60 text-xs font-bold uppercase tracking-[0.2em]">Real-time Green Rankings</p>
+                        <h2 className="text-2xl font-black uppercase">ESG Analytics</h2>
+                        <p className="text-emerald-400/60 text-[10px] font-bold tracking-[0.2em] uppercase">Corporate Sustainability Stats</p>
                     </header>
 
-                    <div className="flex bg-white/5 p-1 rounded-2xl">
-                        <button onClick={() => setMode('individual')} className={`flex-1 py-3 rounded-xl text-xs font-bold transition-all ${mode === 'individual' ? 'bg-emerald-500 text-emerald-950' : 'opacity-40'}`}>รายคน</button>
-                        <button onClick={() => setMode('branch')} className={`flex-1 py-3 rounded-xl text-xs font-bold transition-all ${mode === 'branch' ? 'bg-emerald-500 text-emerald-950' : 'opacity-40'}`}>สาขา</button>
-                    </div>
-
-                    {/* Top 3 Podium */}
-                    <div className="flex justify-around items-end pt-10 pb-4">
-                        <div className="text-center relative">
-                            <div className="w-16 h-16 rounded-2xl bg-white/10 border-2 border-white/20 p-1 mb-2 relative">
-                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=2" className="rounded-xl" />
-                                <div className="absolute -top-3 -right-3 w-8 h-8 bg-slate-400 rounded-full border-4 border-emerald-900 flex items-center justify-center text-xs font-bold text-emerald-950">2</div>
-                            </div>
-                            <p className="text-[10px] font-bold">คุณนัด</p>
-                            <p className="text-xs font-black text-emerald-400">1,120</p>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="glass-card p-5 rounded-[2rem] border-l-4 border-emerald-500">
+                            <p className="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-widest">Branch Impact</p>
+                            <h4 className="text-xl font-black text-emerald-400">{stats.branch} <span className="text-[10px] text-white opacity-40">kg</span></h4>
+                            <p className="text-[8px] opacity-30 uppercase font-bold mt-1">From {user.branch}</p>
                         </div>
-                        <div className="text-center relative -top-6 scale-110">
-                            <div className="w-20 h-20 rounded-[2rem] bg-yellow-400/20 border-2 border-yellow-400 p-1 mb-2 relative">
-                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" className="rounded-[1.5rem]" />
-                                <i className="fas fa-crown absolute -top-8 left-1/2 -translate-x-1/2 text-3xl text-yellow-400 animate-bounce"></i>
-                                <div className="absolute -top-3 -right-3 w-10 h-10 bg-yellow-400 rounded-full border-4 border-emerald-900 flex items-center justify-center text-sm font-bold text-emerald-950">1</div>
-                            </div>
-                            <p className="text-xs font-bold uppercase tracking-widest">คุณอาม่า</p>
-                            <p className="text-lg font-black text-yellow-400">1,450</p>
-                        </div>
-                        <div className="text-center relative">
-                            <div className="w-16 h-16 rounded-2xl bg-white/10 border-2 border-white/20 p-1 mb-2 relative">
-                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=3" className="rounded-xl" />
-                                <div className="absolute -top-3 -right-3 w-8 h-8 bg-amber-700 rounded-full border-4 border-emerald-900 flex items-center justify-center text-xs font-bold text-emerald-950">3</div>
-                            </div>
-                            <p className="text-[10px] font-bold">คุณเก่ง</p>
-                            <p className="text-xs font-black text-emerald-400">980</p>
+                        <div className="glass-card p-5 rounded-[2rem] border-l-4 border-blue-500">
+                            <p className="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-widest">Platform Total</p>
+                            <h4 className="text-xl font-black text-blue-400">{stats.total} <span className="text-[10px] text-white opacity-40">kg</span></h4>
+                            <p className="text-[8px] opacity-30 uppercase font-bold mt-1">All Hillkoff Branches</p>
                         </div>
                     </div>
 
-                    <div className="space-y-3">
-                        {[4,5,6,7,8].map(rank => (
-                            <div key={rank} className="glass-card p-4 rounded-2xl flex items-center gap-4 group active:bg-white/10 transition-all">
-                                <span className="text-xs font-bold opacity-30 w-4">{rank}</span>
-                                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center font-bold">
-                                    <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${rank*12}`} className="w-8 h-8" />
+                    <div className="glass-card p-8 rounded-[3rem] relative">
+                        <h4 className="text-xs font-black uppercase tracking-[0.2em] mb-8 text-center opacity-60">Waste Collection Mix</h4>
+                        <div className="h-56 w-full relative">
+                            {logs.length > 0 ? (
+                                <canvas ref={chartRef}></canvas>
+                            ) : (
+                                <div className="h-full flex flex-col items-center justify-center opacity-20">
+                                    <i className="fas fa-chart-pie text-5xl mb-2"></i>
+                                    <p className="text-[10px] font-bold uppercase tracking-[0.3em]">No Data to Plot</p>
                                 </div>
-                                <div className="flex-1">
-                                    <h4 className="text-sm font-bold">พนักงานระดับ {10-rank}</h4>
-                                    <p className="text-[10px] opacity-40 uppercase font-bold tracking-widest">Hillkoff {BRANCHES[rank % 6].id}</p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-sm font-black text-emerald-400">{1200 - (rank * 120)}</p>
-                                    <p className="text-[8px] opacity-30 uppercase font-bold tracking-tighter">Green Pts</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            );
-        };
-
-        // 7. Community & Interaction
-        const CommunityTab = ({ user }) => {
-            const [messages, setMessages] = useState([
-                { id: 1, user: 'Admin', branch: 'HQ', text: 'สัปดาห์นี้สาขาช้างเผือกลดพลาสติกไปได้กว่า 20kg! สุดยอดมากครับ 👏', time: '10:30', isSystem: true },
-                { id: 2, user: 'พี่สมปอง', branch: 'ช้างเผือก', text: 'กำลังแยกกากกาแฟล๊อตใหญ่เลยครับ มาร่วมกันนะ!', time: '11:15', isSystem: false },
-                { id: 3, user: 'น้องมีนา', branch: 'มหิดล', text: 'ที่มหิดลวันนี้แยกกระดาษได้เยอะเลยค่ะ 🌿', time: '11:20', isSystem: false }
-            ]);
-
-            return (
-                <div className="h-screen flex flex-col pt-8 animate-fade-in">
-                    <header className="px-6 mb-6">
-                        <h2 className="text-2xl font-black">Community</h2>
-                        <p className="text-emerald-400/60 text-xs font-bold uppercase tracking-[0.2em]">Share your green impact</p>
-                    </header>
-
-                    <div className="flex-1 overflow-y-auto px-6 space-y-6 pb-40">
-                        {messages.map(msg => (
-                            <div key={msg.id} className={`flex flex-col ${msg.user === user.name ? 'items-end' : 'items-start'}`}>
-                                <div className={`max-w-[85%] p-4 rounded-3xl shadow-lg relative ${msg.isSystem ? 'bg-emerald-950 border border-emerald-500/30' : msg.user === user.name ? 'bg-emerald-600 rounded-tr-none' : 'glass-card rounded-tl-none'}`}>
-                                    {!msg.isSystem && <p className="text-[10px] font-bold mb-1 opacity-60 uppercase">{msg.user} • {msg.branch}</p>}
-                                    <p className="text-sm leading-relaxed">{msg.text}</p>
-                                    <div className="mt-2 flex justify-end">
-                                        <span className="text-[8px] opacity-30">{msg.time}</span>
-                                    </div>
-                                    {msg.isSystem && <div className="absolute -top-2 -left-2 bg-blue-500 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"><i className="fas fa-bullhorn"></i></div>}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md px-6 z-40">
-                        <div className="glass-card p-2 rounded-full flex items-center gap-3 border-white/20 shadow-2xl">
-                            <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-emerald-950">
-                                <i className="fas fa-plus"></i>
-                            </div>
-                            <input className="flex-1 bg-transparent border-none outline-none text-xs placeholder:text-white/20 px-2" placeholder="พิมพ์ข้อความสีเขียว..." />
-                            <button className="w-12 h-10 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-400">
-                                <i className="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // 8. ESG Report & Documents (Tab 6)
-        const ProjectReport = () => {
-            return (
-                <div className="p-6 pb-32 space-y-8 animate-fade-in">
-                    <header>
-                        <h2 className="text-2xl font-black">ESG Strategy</h2>
-                        <p className="text-emerald-400/60 text-xs font-bold uppercase tracking-[0.2em]">Sustainability Commitments</p>
-                    </header>
-
-                    <GlassCard className="border-l-4 border-emerald-500">
-                        <h4 className="font-bold text-emerald-400 mb-2 uppercase text-xs tracking-widest">Our Mission</h4>
-                        <p className="text-xs leading-relaxed opacity-80">
-                            Hillkoff Zero Waste Platform มุ่งเน้นการเปลี่ยนผ่านองค์กรสู่ความยั่งยืนแบบ Circular Economy โดยเริ่มจากการจัดการวัสดุเหลือใช้ในห่วงโซ่การผลิตกาแฟ 
-                            เราตั้งเป้าลดการปล่อยก๊าซเรือนกระจก (Net Zero) ภายในปี 2030 ผ่านการมีส่วนร่วมของพนักงานทุกระดับ
-                        </p>
-                    </GlassCard>
-
-                    <div className="space-y-4">
-                        <h4 className="font-bold text-sm uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-4 bg-blue-500 rounded-full"></span>
-                            Recent Achievements
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="glass-card p-5 rounded-2xl flex items-center gap-4">
-                                <div className="text-2xl">📦</div>
-                                <div>
-                                    <h5 className="text-sm font-black">Sustainable Packaging Transition</h5>
-                                    <p className="text-[10px] opacity-40">สาขาช้างเผือก: เปลี่ยนจาก Bubble Wrap เป็นกระดาษรังผึ้งรีไซเคิล (Honeycomb Paper)</p>
-                                </div>
-                            </div>
-                            <div className="glass-card p-5 rounded-2xl flex items-center gap-4">
-                                <div className="text-2xl">⚡</div>
-                                <div>
-                                    <h5 className="text-sm font-black">Energy Efficiency V1</h5>
-                                    <p className="text-[10px] opacity-40">ลดการใช้ไฟฟ้าในส่วนพื้นที่ Packing ลง 15% ในไตรมาสแรก</p>
-                                </div>
+                            )}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+                                <p className="text-[8px] font-bold opacity-40 uppercase tracking-widest leading-none mb-1">Total</p>
+                                <p className="text-xl font-black leading-none">{stats.wasteShare.reduce((a,c) => a + c.weight, 0).toFixed(0)}</p>
+                                <p className="text-[8px] font-bold opacity-40 uppercase tracking-widest">KG</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="space-y-4">
-                        <h4 className="font-bold text-sm uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-4 bg-yellow-500 rounded-full"></span>
-                            ESG Documents
-                        </h4>
-                        <div className="grid grid-cols-1 gap-2">
-                            {['Sustainability_Policy_2026.pdf', 'GHG_Inventory_Report_Q1.xlsx', 'SDG_Impact_Statement.pdf'].map(doc => (
-                                <div key={doc} className="glass-card p-4 rounded-2xl flex justify-between items-center group active:scale-95 transition-all">
-                                    <div className="flex items-center gap-3">
-                                        <i className="fas fa-file-alt text-emerald-500"></i>
-                                        <span className="text-[10px] font-bold opacity-60 uppercase">{doc}</span>
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 ml-2">Impact Standard Certificates</h4>
+                        <div className="space-y-2">
+                            {['ISO 14064-1 Carbon Footprint', 'GHG Protocol Certified', 'Zero Waste to Landfill'].map((cert, idx) => (
+                                <div key={idx} className="glass-card p-4 rounded-2xl flex items-center gap-4 group transition-all">
+                                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                                        <i className="fas fa-award"></i>
                                     </div>
-                                    <i className="fas fa-download text-xs text-emerald-500/50"></i>
+                                    <span className="text-[10px] font-bold uppercase tracking-wider flex-1">{cert}</span>
+                                    <i className="fas fa-check-circle text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                                 </div>
                             ))}
                         </div>
@@ -792,60 +579,201 @@
             );
         };
 
-        // --- MASTER APP ---
-        const App = () => {
-            const [user, setUser] = useState(null);
-            const [activeTab, setActiveTab] = useState('home');
-
-            // Persistence
-            useEffect(() => {
-                const saved = localStorage.getItem('hk_session_v2');
-                if (saved) setUser(JSON.parse(saved));
-            }, []);
-
-            const handleLogin = (userData) => {
-                setUser(userData);
-                localStorage.setItem('hk_session_v2', JSON.stringify(userData));
-            };
-
-            if (!user) return <AuthLayer onLogin={handleLogin} />;
+        const RankingView = ({ logs, user }) => {
+            // คำนวณอันดับตามพนักงาน
+            const rankings = useMemo(() => {
+                const userTotals = logs.reduce((acc, log) => {
+                    if (!acc[log.userName]) {
+                        acc[log.userName] = { name: log.userName, branch: log.branch, pts: 0, carbon: 0 };
+                    }
+                    acc[log.userName].pts += log.points;
+                    acc[log.userName].carbon += parseFloat(log.carbon);
+                    return acc;
+                }, {});
+                
+                return Object.values(userTotals).sort((a, b) => b.pts - a.pts);
+            }, [logs]);
 
             return (
-                <div className="app-container">
-                    {/* Render Scene */}
-                    <div className="h-screen overflow-y-auto no-scrollbar">
-                        {activeTab === 'home' && <HomeDashboard user={user} />}
-                        {activeTab === 'record' && <WasteManagement user={user} />}
-                        {activeTab === 'analytics' && <ESGAnalytics />}
-                        {activeTab === 'rank' && <Leaderboard />}
-                        {activeTab === 'social' && <CommunityTab user={user} />}
-                        {activeTab === 'report' && <ProjectReport />}
+                <div className="p-6 space-y-8 animate-fade">
+                    <header>
+                        <h2 className="text-2xl font-black uppercase">Hall of Green</h2>
+                        <p className="text-emerald-400/60 text-[10px] font-bold tracking-[0.2em] uppercase">Sustainability Champions</p>
+                    </header>
+
+                    {/* Podium Simulation */}
+                    <div className="flex justify-around items-end pt-12 pb-6 relative">
+                        {rankings.length >= 2 && (
+                            <div className="text-center">
+                                <div className="w-16 h-16 rounded-2xl bg-slate-400/20 border-2 border-slate-400/50 p-1 mb-2 relative">
+                                    <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${rankings[1].name}`} className="rounded-xl" />
+                                    <div className="absolute -top-3 -left-3 w-8 h-8 bg-slate-400 rounded-full border-4 border-emerald-900 flex items-center justify-center text-xs font-bold text-emerald-950">2</div>
+                                </div>
+                                <p className="text-[9px] font-bold uppercase truncate w-16 mx-auto">{rankings[1].name}</p>
+                            </div>
+                        )}
+                        {rankings.length >= 1 && (
+                            <div className="text-center relative -top-6 scale-125">
+                                <div className="w-20 h-20 rounded-[2rem] bg-yellow-400/20 border-2 border-yellow-400 p-1 mb-2 relative">
+                                    <i className="fas fa-crown absolute -top-8 left-1/2 -translate-x-1/2 text-2xl text-yellow-400 animate-bounce"></i>
+                                    <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${rankings[0].name}`} className="rounded-[1.5rem]" />
+                                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-yellow-400 rounded-full border-4 border-emerald-900 flex items-center justify-center text-sm font-bold text-emerald-950">1</div>
+                                </div>
+                                <p className="text-[10px] font-black uppercase truncate w-20 mx-auto">{rankings[0].name}</p>
+                            </div>
+                        )}
+                        {rankings.length >= 3 && (
+                            <div className="text-center">
+                                <div className="w-16 h-16 rounded-2xl bg-amber-700/20 border-2 border-amber-700/50 p-1 mb-2 relative">
+                                    <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${rankings[2].name}`} className="rounded-xl" />
+                                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-amber-700 rounded-full border-4 border-emerald-900 flex items-center justify-center text-xs font-bold text-emerald-950">3</div>
+                                </div>
+                                <p className="text-[9px] font-bold uppercase truncate w-16 mx-auto">{rankings[2].name}</p>
+                            </div>
+                        )}
                     </div>
 
-                    {/* Bottom Navigation Layer (6 Tabs) */}
-                    <nav className="fixed bottom-0 left-0 right-0 z-50 glass-nav safe-area-bottom rounded-t-[2.5rem]">
-                        <div className="flex justify-around items-center h-20 px-2">
-                            <NavButton id="home" icon="fa-home" label="Home" activeTab={activeTab} onClick={setActiveTab} />
-                            <NavButton id="record" icon="fa-plus-circle" label="Record" activeTab={activeTab} onClick={setActiveTab} />
-                            <NavButton id="analytics" icon="fa-chart-pie" label="Analyse" activeTab={activeTab} onClick={setActiveTab} />
-                            <NavButton id="rank" icon="fa-award" label="Rank" activeTab={activeTab} onClick={setActiveTab} />
-                            <NavButton id="social" icon="fa-comment-dots" label="Social" activeTab={activeTab} onClick={setActiveTab} />
-                            <NavButton id="report" icon="fa-file-signature" label="ESG" activeTab={activeTab} onClick={setActiveTab} />
-                        </div>
-                    </nav>
+                    <div className="space-y-3">
+                        {rankings.length === 0 ? (
+                            <div className="text-center py-20 opacity-20 font-black uppercase tracking-widest text-xs">No Data Logged Yet</div>
+                        ) : (
+                            rankings.map((rank, i) => (
+                                <div key={i} className={`glass-card p-5 rounded-[2rem] flex items-center gap-5 transition-all ${rank.name === user.name ? 'border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500/50 scale-[1.02]' : ''}`}>
+                                    <span className="text-xs font-black opacity-30 w-4">{i + 1}</span>
+                                    <div className="w-10 h-10 rounded-xl bg-white/5 p-1 flex items-center justify-center">
+                                        <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${rank.name}`} className="rounded-lg" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h5 className="text-sm font-bold truncate leading-none">{rank.name}</h5>
+                                        <p className="text-[9px] font-bold text-emerald-500/60 uppercase tracking-tighter mt-1">{rank.branch}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-black text-emerald-400">{rank.pts.toLocaleString()}</p>
+                                        <p className="text-[8px] opacity-30 uppercase font-bold tracking-tighter leading-none">Total Points</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </div>
             );
         };
 
-        const NavButton = ({ id, icon, label, activeTab, onClick }) => {
-            const isActive = activeTab === id;
+        const SocialView = ({ user }) => {
+            const [msg, setMsg] = useState('');
+            const [messages, setMessages] = useState(() => getLocalStorage('hk_chat_msgs', [
+                { id: 1, user: 'Admin', branch: 'HQ', text: 'ยินดีต้อนรับชาวฮิลล์คอฟฟ์ทุกท่านเข้าสู่แพลตฟอร์มสีเขียวครับ! 🌱', time: '10:00' },
+                { id: 2, user: 'พี่สมชาย', branch: 'ช้างเผือก', text: 'วันนี้พนักงานสาขาช้างเผือกช่วยกันแยกกากกาแฟได้ล๊อตใหญ่เลยครับ 🐘☕', time: '11:15' }
+            ]));
+
+            const sendMsg = (e) => {
+                e.preventDefault();
+                if (!msg.trim()) return;
+                const newMsg = {
+                    id: Date.now(),
+                    user: user.name,
+                    branch: user.branch,
+                    text: msg,
+                    time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+                };
+                const updated = [...messages, newMsg];
+                setMessages(updated);
+                localStorage.setItem('hk_chat_msgs', JSON.stringify(updated));
+                setMsg('');
+            };
+
             return (
-                <button onClick={() => onClick(id)} className={`flex flex-col items-center gap-1 flex-1 transition-all duration-300 ${isActive ? 'bottom-nav-active' : 'opacity-30'}`}>
-                    <i className={`fas ${icon} ${isActive ? 'text-lg' : 'text-md'}`}></i>
-                    <span className="text-[8px] font-black uppercase tracking-tighter">{label}</span>
-                </button>
+                <div className="h-screen flex flex-col pt-6 animate-fade">
+                    <header className="px-6 mb-6">
+                        <h2 className="text-2xl font-black uppercase">Green Community</h2>
+                        <p className="text-emerald-400/60 text-[10px] font-bold tracking-[0.2em] uppercase">Share Your Impact Moments</p>
+                    </header>
+
+                    <div className="flex-1 overflow-y-auto px-6 space-y-6 pb-40 no-scrollbar">
+                        {messages.map((m) => (
+                            <div key={m.id} className={`flex flex-col ${m.user === user.name ? 'items-end' : 'items-start'}`}>
+                                <div className={`max-w-[85%] p-4 rounded-3xl shadow-lg relative ${m.user === user.name ? 'bg-emerald-600 rounded-tr-none' : 'glass-card rounded-tl-none border-l-4 border-emerald-500'}`}>
+                                    <div className="flex items-center gap-2 mb-1.5 opacity-60">
+                                        <span className="text-[9px] font-black uppercase tracking-tighter">{m.user}</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-tighter">• {m.branch}</span>
+                                    </div>
+                                    <p className="text-xs leading-relaxed">{m.text}</p>
+                                    <p className="text-[8px] opacity-30 mt-2 text-right uppercase font-bold">{m.time}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="fixed bottom-28 left-1/2 -translate-x-1/2 w-full max-w-md px-6 z-40">
+                        <form onSubmit={sendMsg} className="glass-card p-2 rounded-full flex items-center gap-2 border-white/20 shadow-2xl backdrop-blur-3xl">
+                            <input 
+                                value={msg}
+                                onChange={(e) => setMsg(e.target.value)}
+                                className="flex-1 bg-transparent border-none outline-none text-xs placeholder:text-white/20 px-4 h-12" 
+                                placeholder="พิมพ์ข้อความแชร์ความรักษ์โลก..." 
+                            />
+                            <button type="submit" className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-emerald-950 active:scale-90 transition-all">
+                                <i className="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             );
         };
+
+        const PolicyView = () => (
+            <div className="p-6 space-y-8 animate-fade">
+                <header>
+                    <h2 className="text-2xl font-black uppercase">Green Strategy</h2>
+                    <p className="text-emerald-400/60 text-[10px] font-bold tracking-[0.2em] uppercase">Hillkoff Sustainability Policy</p>
+                </header>
+
+                <div className="space-y-4">
+                    <div className="glass-card p-8 rounded-[3rem] border-l-4 border-emerald-500 relative overflow-hidden">
+                        <i className="fas fa-quote-left absolute top-4 left-4 text-4xl opacity-5"></i>
+                        <h4 className="text-sm font-black text-emerald-400 mb-4 uppercase tracking-widest">Our Mission</h4>
+                        <p className="text-xs leading-relaxed opacity-70">
+                            มุ่งเน้นการเปลี่ยนผ่านสู่เศรษฐกิจหมุนเวียน (Circular Economy) 
+                            โดยการจัดการวัสดุเหลือใช้ในห่วงโซ่การผลิตกาแฟอย่างยั่งยืน 
+                            ลดการปล่อยก๊าซเรือนกระจกสู่ Net Zero ภายในปี 2030
+                        </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 ml-2">Recent Success Cases</h4>
+                        <div className="glass-card p-6 rounded-[2.5rem] flex items-center gap-5 border-l-4 border-blue-500">
+                            <div className="text-3xl">📦</div>
+                            <div>
+                                <h5 className="text-xs font-black uppercase leading-tight mb-1">Sustainable Packaging</h5>
+                                <p className="text-[10px] opacity-60">สาขาช้างเผือก: เปลี่ยน Bubble Wrap เป็นกระดาษรังผึ้งรีไซเคิล 100%</p>
+                            </div>
+                        </div>
+                        <div className="glass-card p-6 rounded-[2.5rem] flex items-center gap-5 border-l-4 border-yellow-500">
+                            <div className="text-3xl">♻️</div>
+                            <div>
+                                <h5 className="text-xs font-black uppercase leading-tight mb-1">Coffee Grounds Valorization</h5>
+                                <p className="text-[10px] opacity-60">แปรรูปกากกาแฟเหลือทิ้งเป็นวัสดุดูดกลิ่นและปุ๋ยชีวภาพ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-4 pt-4">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 ml-2">Official Documents</h4>
+                        <div className="grid grid-cols-1 gap-2">
+                            {['ESG_Report_2026.pdf', 'NetZero_Roadmap.pdf', 'Carbon_Audit_Certificate.xlsx'].map(doc => (
+                                <div key={doc} className="glass-card p-4 rounded-2xl flex justify-between items-center group active:scale-95 transition-all">
+                                    <div className="flex items-center gap-3">
+                                        <i className="fas fa-file-pdf text-emerald-500"></i>
+                                        <span className="text-[9px] font-bold opacity-60 uppercase">{doc}</span>
+                                    </div>
+                                    <i className="fas fa-download text-[10px] text-emerald-500/50"></i>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
